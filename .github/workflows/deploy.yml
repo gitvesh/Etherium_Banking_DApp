@@ -1,0 +1,31 @@
+name: Deploy ETH Banking DApp
+
+on:
+  push:
+    branches:
+      - main  # Runs when code is pushed to the main branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v3
+
+      - name: Install Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 18
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Compile Smart Contracts
+        run: npx truffle compile
+
+      - name: Run Migrations on Ganache
+        run: npx truffle migrate --network development
+
+      - name: Build Frontend
+        run: npm run build
